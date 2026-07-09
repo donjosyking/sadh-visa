@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Download } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 const etatLabel: Record<string, string> = {
@@ -14,6 +14,11 @@ export default async function RapportsPage({
   searchParams: Promise<{ agentId?: string; patientId?: string; date?: string }>;
 }) {
   const { agentId, patientId, date } = await searchParams;
+
+  const pdfQuery = new URLSearchParams();
+  if (agentId) pdfQuery.set("agentId", agentId);
+  if (patientId) pdfQuery.set("patientId", patientId);
+  if (date) pdfQuery.set("date", date);
 
   const [rapports, agents, patients] = await Promise.all([
     prisma.rapportJournalier.findMany({
@@ -119,9 +124,20 @@ export default async function RapportsPage({
         )}
       </form>
 
-      <p className="mt-4 text-sm text-foreground/70">
-        {rapports.length} rapport{rapports.length > 1 ? "s" : ""}
-      </p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-foreground/70">
+          {rapports.length} rapport{rapports.length > 1 ? "s" : ""}
+        </p>
+        {rapports.length > 0 && (
+          <a
+            href={`/api/rapports/pdf?${pdfQuery.toString()}`}
+            className="inline-flex items-center gap-2 rounded-full bg-brand-green-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-green-800"
+          >
+            <Download size={16} />
+            Télécharger ces rapports en PDF
+          </a>
+        )}
+      </div>
 
       <div className="mt-4 space-y-3">
         {rapports.map((r) => (
@@ -142,12 +158,21 @@ export default async function RapportsPage({
                   {r.heureDebut} – {r.heureFin}
                 </p>
               </div>
-              {r.alerteIncident && (
-                <span className="flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-brand-red-700">
-                  <AlertTriangle size={14} />
-                  Incident
-                </span>
-              )}
+              <div className="flex items-center gap-2">
+                {r.alerteIncident && (
+                  <span className="flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-brand-red-700">
+                    <AlertTriangle size={14} />
+                    Incident
+                  </span>
+                )}
+                <a
+                  href={`/api/rapports/${r.id}/pdf`}
+                  className="flex items-center gap-1 rounded-full border border-brand-green-700 px-3 py-1 text-xs font-semibold text-brand-green-700 transition hover:bg-brand-green-50"
+                >
+                  <Download size={13} />
+                  PDF
+                </a>
+              </div>
             </div>
 
             <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-foreground/80">
