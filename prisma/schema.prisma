@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Sexe {
+  H
+  F
+}
+
+enum TypeIntervention {
+  ACCIDENT
+  MALADIE
+  AUTRE
+}
+
+enum OptionService {
+  ALLER_RETOUR
+  PLEIN_TEMPS
+  TEMPS_PARTIEL
+}
+
+enum RolePersonnel {
+  PERSONNEL
+  ADMIN
+  DIRECTION
+}
+
+enum EtatPatient {
+  BON
+  MOYEN
+  PREOCCUPANT
+}
+
+model Patient {
+  id               String   @id @default(cuid())
+
+  // Fiche de renseignements
+  nomPrenoms       String
+  sexe             Sexe
+  adresse          String
+  codePostalVille  String
+  telephone        String
+  email            String?
+  dateNaissance    DateTime
+  villeNaissance   String
+  taille           Float?
+  poids            Float?
+  pathologie       String?
+  traitementEnCours String?
+  typeIntervention TypeIntervention
+
+  personneAPrevenirNom     String
+  lienParente              String
+  personneAPrevenirAdresse String
+
+  // Option du service
+  optionService    OptionService
+
+  // Heures
+  heureDebut       String?
+  heureFin         String?
+  rotation         String?
+
+  // Frais
+  fraisDossier              Float?
+  fraisPrestationJournalier Float?
+  fraisPrestationMensuel    Float?
+  cautionAvance             Float?
+  reste                     Float?
+  dateSignature             DateTime?
+  responsable               String?
+  telephoneResponsable      String?
+
+  createdAt        DateTime @default(now())
+
+  rapports         RapportJournalier[]
+}
+
+model Personnel {
+  id         String        @id @default(cuid())
+  nom        String
+  email      String        @unique
+  motDePasse String
+  role       RolePersonnel @default(PERSONNEL)
+  actif      Boolean       @default(true)
+  createdAt  DateTime      @default(now())
+
+  rapports   RapportJournalier[]
+}
+
+model RapportJournalier {
+  id        String   @id @default(cuid())
+
+  agentId   String
+  agent     Personnel @relation(fields: [agentId], references: [id])
+  patientId String
+  patient   Patient   @relation(fields: [patientId], references: [id])
+  date      DateTime  @default(now())
+
+  heureDebut String
+  heureFin   String
+
+  // Contrôle des paramètres
+  tensionArterielle           String?
+  temperature                 String?
+  pouls                       String?
+  glycemie                    String?
+  autresObservationsMedicales String?
+
+  // Soins et aides effectués
+  aideLeverCoucher     Boolean @default(false)
+  aideDeplacement      Boolean @default(false)
+  aideHygiene          Boolean @default(false)
+  aideToilette         Boolean @default(false)
+  aideHabillage        Boolean @default(false)
+  aideMedicaments      Boolean @default(false)
+  aideRepas            Boolean @default(false)
+  aideConversation     Boolean @default(false)
+  accompagnementBalade Boolean @default(false)
+  autreSoin            String?
+
+  // État général
+  etatPhysique           EtatPatient
+  commentaireEtatPhysique String?
+  etatMoral              EtatPatient
+  commentaireEtatMoral   String?
+
+  // Observations et incidents
+  observations       String?
+  alerteIncident      Boolean @default(false)
+  descriptionIncident String?
+
+  createdAt DateTime @default(now())
+}
