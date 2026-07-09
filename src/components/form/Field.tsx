@@ -22,6 +22,30 @@ export function Field({
   );
 }
 
+export function CheckboxPill({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <label className="cursor-pointer">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="peer sr-only"
+      />
+      <span className="inline-flex min-h-11 items-center rounded-full border-2 border-brand-green-700/25 px-4 py-2.5 text-sm font-medium text-brand-green-900 transition peer-checked:border-brand-green-700 peer-checked:bg-brand-green-700 peer-checked:text-white">
+        {label}
+      </span>
+    </label>
+  );
+}
+
 export function ChoiceGroup({
   name,
   options,
