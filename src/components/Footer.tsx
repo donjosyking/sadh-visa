@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Code2 } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -57,6 +57,13 @@ export default function Footer() {
         <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-white/50">
           © {new Date().getFullYear()} SADH-VISA — Service d&apos;Assistance à
           la Personne à Domicile et dans les Hôpitaux
+        </div>
+        <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-white/40">
+          <Code2 size={14} className="text-brand-red-600" />
+          <span>
+            Dev By{" "}
+            <span className="font-semibold text-white/70">Kodzo DZASSI</span>
+          </span>
         </div>
       </div>
     </footer>
