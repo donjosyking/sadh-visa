@@ -8,7 +8,8 @@ const toFloat = (v: unknown) => {
 };
 
 const toDate = (v: unknown) => (v ? new Date(v as string) : null);
-const orNull = (v: unknown) => (v === "" || v === undefined ? null : v);
+const orNull = (v: unknown): string | null =>
+  typeof v === "string" && v !== "" ? v : null;
 
 export async function POST(request: NextRequest) {
   try {

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-const orNull = (v: unknown) => (v === "" || v === undefined ? null : v);
+const orNull = (v: unknown): string | null =>
+  typeof v === "string" && v !== "" ? v : null;
 
 export async function POST(request: NextRequest) {
   const session = await auth();

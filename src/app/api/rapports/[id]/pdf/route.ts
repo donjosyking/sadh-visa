@@ -31,7 +31,7 @@ export async function GET(
     RapportDocument({ rapports: [rapport] })
   );
 
-  return new NextResponse(buffer, {
+  return new NextResponse(new Uint8Array(buffer), {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="rapport-${rapport.patient.nomPrenoms.replace(/\s+/g, "-")}-${id.slice(0, 8)}.pdf"`,
