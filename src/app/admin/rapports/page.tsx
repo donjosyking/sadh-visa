@@ -2,6 +2,8 @@ import Link from "next/link";
 import { AlertTriangle, Download } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const etatLabel: Record<string, string> = {
   BON: "Bon",
   MOYEN: "Moyen",

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Users, FileText, AlertTriangle, UserCog } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   const [patients, rapports, personnelActif, incidents] = await Promise.all([
     prisma.patient.count(),

@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import RapportForm from "@/components/RapportForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function NouveauRapportPage() {
   const patients = await prisma.patient.findMany({
     select: { id: true, nomPrenoms: true },

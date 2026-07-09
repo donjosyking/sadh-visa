@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const optionServiceLabel: Record<string, string> = {
   ALLER_RETOUR: "Aller-retour",
   PLEIN_TEMPS: "Plein temps",

@@ -4,6 +4,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import DeconnexionButton from "@/components/DeconnexionButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function PersonnelPage() {
   const session = await auth();
   const isAdmin =

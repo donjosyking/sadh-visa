@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import PersonnelManager from "@/components/PersonnelManager";
 
+export const dynamic = "force-dynamic";
+
 export default async function PersonnelAdminPage() {
   const personnel = await prisma.personnel.findMany({
     orderBy: { createdAt: "asc" },
