@@ -29,7 +29,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {links.map((link) => (
             <a
               key={link.href}
@@ -41,7 +41,7 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <Link
             href="/connexion"
             className="rounded-full border border-brand-green-700 px-4 py-2 text-sm font-semibold text-brand-green-700 transition hover:bg-brand-green-50"
@@ -59,7 +59,7 @@ export default function Navbar() {
         <button
           type="button"
           aria-label="Ouvrir le menu"
-          className="text-brand-green-900 md:hidden"
+          className="text-brand-green-900 lg:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X size={28} /> : <Menu size={28} />}
@@ -67,7 +67,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-black/5 bg-white px-4 pb-4 md:hidden">
+        <div className="border-t border-black/5 bg-white px-4 pb-4 lg:hidden">
           <nav className="flex flex-col gap-3 pt-3">
             {links.map((link) => (
               <a
