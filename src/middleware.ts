@@ -16,6 +16,13 @@ export default auth((req) => {
     url.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(url);
   }
+
+  if (pathname.startsWith("/admin") && isLoggedIn) {
+    const role = req.auth?.user?.role;
+    if (role !== "ADMIN" && role !== "DIRECTION") {
+      return NextResponse.redirect(new URL("/personnel", req.nextUrl.origin));
+    }
+  }
 });
 
 export const config = {

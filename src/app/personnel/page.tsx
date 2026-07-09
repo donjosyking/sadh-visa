@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { FilePlus2, AlertTriangle } from "lucide-react";
+import { FilePlus2, AlertTriangle, ShieldCheck } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import DeconnexionButton from "@/components/DeconnexionButton";
 
 export default async function PersonnelPage() {
   const session = await auth();
+  const isAdmin =
+    session?.user?.role === "ADMIN" || session?.user?.role === "DIRECTION";
 
   const rapports = session?.user?.id
     ? await prisma.rapportJournalier.findMany({
@@ -29,6 +31,16 @@ export default async function PersonnelPage() {
         </div>
         <DeconnexionButton />
       </div>
+
+      {isAdmin && (
+        <Link
+          href="/admin"
+          className="mt-6 flex items-center gap-2 text-sm font-semibold text-brand-green-700 hover:underline"
+        >
+          <ShieldCheck size={16} />
+          Accéder au back-office Admin/Direction
+        </Link>
+      )}
 
       <Link
         href="/personnel/rapports/nouveau"
